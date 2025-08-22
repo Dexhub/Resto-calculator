@@ -1,10 +1,10 @@
-# 🍽️ Restaurant Business Calculator Pro
+# 🍽️ Dolo's Resto Business Calculator
 
 [![Live Demo](https://img.shields.io/badge/Live-Demo-success?style=for-the-badge&logo=github)](https://dexhub.github.io/Resto-calculator/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Production-green?style=for-the-badge)]()
 
-> **Professional-grade financial planning tool for restaurant businesses with comprehensive investment analysis, cash flow projections, and performance metrics.**
+> **Dolo's professional-grade financial planning tool for restaurant businesses with comprehensive investment analysis, cash flow projections, and performance metrics.**
 
 ## 🚀 Live Demo
 
