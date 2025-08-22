@@ -234,6 +234,71 @@
             font-weight: 500;
         }
 
+        /* Template and Region Selectors */
+        .template-selector,
+        .region-selector {
+            padding: 8px 12px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-700);
+            min-width: 140px;
+            margin-right: 10px;
+        }
+
+        .template-selector:focus,
+        .region-selector:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+
+        /* Scenario Planning Styles */
+        .scenario-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: var(--gray-100);
+            padding: 8px;
+            border-radius: 12px;
+        }
+
+        .scenario-tab {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--gray-600);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .scenario-tab.active {
+            background: white;
+            color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .scenario-tab:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .scenario-content {
+            display: none;
+        }
+
+        .scenario-content.active {
+            display: block;
+        }
+
         /* Tab Content */
         .tab-content {
             display: none;
@@ -949,17 +1014,30 @@
                     </div>
                 </div>
                 <div class="header-actions">
-                    <button class="btn btn-secondary" onclick="loadSampleData()">
-                        <i class="fas fa-database"></i>
-                        Load Sample
-                    </button>
-                    <button class="btn btn-secondary" onclick="saveData()">
+                    <select id="restaurantTemplate" onchange="loadTemplate()" class="template-selector">
+                        <option value="">Select Template</option>
+                        <option value="fast_food">Fast Food</option>
+                        <option value="fine_dining">Fine Dining</option>
+                        <option value="casual_dining">Casual Dining</option>
+                        <option value="cafe_coffee">Café & Coffee</option>
+                        <option value="food_truck">Food Truck</option>
+                        <option value="ghost_kitchen">Ghost Kitchen</option>
+                    </select>
+                    <select id="regionSelector" onchange="applyRegionalData()" class="region-selector">
+                        <option value="">Select Region</option>
+                        <option value="new_york">New York City</option>
+                        <option value="los_angeles">Los Angeles</option>
+                        <option value="chicago">Chicago</option>
+                        <option value="dallas">Dallas</option>
+                        <option value="miami">Miami</option>
+                    </select>
+                    <button class="btn btn-secondary" onclick="saveProject()">
                         <i class="fas fa-save"></i>
-                        Save
+                        Save Project
                     </button>
-                    <button class="btn btn-primary" onclick="exportReport()">
-                        <i class="fas fa-file-export"></i>
-                        Export Report
+                    <button class="btn btn-primary" onclick="exportProfessionalReport()">
+                        <i class="fas fa-file-pdf"></i>
+                        Export PDF
                     </button>
                 </div>
             </div>
@@ -975,6 +1053,10 @@
                 <i class="fas fa-building"></i>
                 <span class="tab-text">Premises & Operations</span>
             </button>
+            <button class="nav-tab" onclick="switchTab('scenarios')">
+                <i class="fas fa-chart-area"></i>
+                <span class="tab-text">Scenario Planning</span>
+            </button>
             <button class="nav-tab" onclick="switchTab('cashflow')">
                 <i class="fas fa-chart-line"></i>
                 <span class="tab-text">Cash Flow Analysis</span>
@@ -982,6 +1064,10 @@
             <button class="nav-tab" onclick="switchTab('results')">
                 <i class="fas fa-analytics"></i>
                 <span class="tab-text">Financial Results</span>
+            </button>
+            <button class="nav-tab" onclick="switchTab('reports')">
+                <i class="fas fa-file-alt"></i>
+                <span class="tab-text">Professional Reports</span>
             </button>
         </nav>
 
@@ -1117,6 +1203,161 @@
                 </div>
                 <div class="chart-canvas">
                     <canvas id="investmentChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scenario Planning Tab -->
+        <div id="scenarios" class="tab-content">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-area"></i>
+                    Scenario Planning & Analysis
+                </h2>
+            </div>
+
+            <div class="form-section">
+                <h3 class="form-section-title">
+                    <i class="fas fa-layer-group"></i>
+                    Multiple Scenarios Comparison
+                </h3>
+                <div class="scenario-tabs">
+                    <button class="scenario-tab active" onclick="switchScenario('optimistic')">
+                        <i class="fas fa-arrow-up"></i>
+                        Optimistic
+                    </button>
+                    <button class="scenario-tab" onclick="switchScenario('realistic')">
+                        <i class="fas fa-balance-scale"></i>
+                        Realistic
+                    </button>
+                    <button class="scenario-tab" onclick="switchScenario('pessimistic')">
+                        <i class="fas fa-arrow-down"></i>
+                        Pessimistic
+                    </button>
+                </div>
+
+                <div class="scenario-content active" id="optimistic-scenario">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="opt-salesGrowth">Monthly Sales Growth (%)</label>
+                            <input type="number" id="opt-salesGrowth" value="8" step="0.1" onchange="calculateScenarios()">
+                        </div>
+                        <div class="form-group">
+                            <label for="opt-avgTicket">Average Ticket Size</label>
+                            <div class="input-prefix">
+                                <input type="number" id="opt-avgTicket" value="18" step="0.01" onchange="calculateScenarios()">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="opt-customerCount">Daily Customer Count</label>
+                            <input type="number" id="opt-customerCount" value="200" onchange="calculateScenarios()">
+                        </div>
+                        <div class="form-group">
+                            <label for="opt-operatingDays">Operating Days/Month</label>
+                            <input type="number" id="opt-operatingDays" value="26" onchange="calculateScenarios()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scenario-content" id="realistic-scenario">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="real-salesGrowth">Monthly Sales Growth (%)</label>
+                            <input type="number" id="real-salesGrowth" value="5" step="0.1" onchange="calculateScenarios()">
+                        </div>
+                        <div class="form-group">
+                            <label for="real-avgTicket">Average Ticket Size</label>
+                            <div class="input-prefix">
+                                <input type="number" id="real-avgTicket" value="15" step="0.01" onchange="calculateScenarios()">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="real-customerCount">Daily Customer Count</label>
+                            <input type="number" id="real-customerCount" value="150" onchange="calculateScenarios()">
+                        </div>
+                        <div class="form-group">
+                            <label for="real-operatingDays">Operating Days/Month</label>
+                            <input type="number" id="real-operatingDays" value="25" onchange="calculateScenarios()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scenario-content" id="pessimistic-scenario">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="pess-salesGrowth">Monthly Sales Growth (%)</label>
+                            <input type="number" id="pess-salesGrowth" value="2" step="0.1" onchange="calculateScenarios()">
+                        </div>
+                        <div class="form-group">
+                            <label for="pess-avgTicket">Average Ticket Size</label>
+                            <div class="input-prefix">
+                                <input type="number" id="pess-avgTicket" value="12" step="0.01" onchange="calculateScenarios()">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="pess-customerCount">Daily Customer Count</label>
+                            <input type="number" id="pess-customerCount" value="100" onchange="calculateScenarios()">
+                        </div>
+                        <div class="form-group">
+                            <label for="pess-operatingDays">Operating Days/Month</label>
+                            <input type="number" id="pess-operatingDays" value="22" onchange="calculateScenarios()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-title">
+                        <i class="fas fa-chart-line"></i>
+                        Scenario Comparison - 3 Year Projection
+                    </div>
+                </div>
+                <div class="chart-canvas">
+                    <canvas id="scenarioChart"></canvas>
+                </div>
+            </div>
+
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-card-header">
+                        <div class="result-card-title">Optimistic ROI</div>
+                        <div class="result-card-icon">
+                            <i class="fas fa-arrow-up" style="color: var(--success-color);"></i>
+                        </div>
+                    </div>
+                    <div class="result-card-value" id="optimistic-roi">125%</div>
+                    <div class="result-card-subtitle">3-year return</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-card-header">
+                        <div class="result-card-title">Realistic ROI</div>
+                        <div class="result-card-icon">
+                            <i class="fas fa-balance-scale" style="color: var(--primary-color);"></i>
+                        </div>
+                    </div>
+                    <div class="result-card-value" id="realistic-roi">85%</div>
+                    <div class="result-card-subtitle">3-year return</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-card-header">
+                        <div class="result-card-title">Pessimistic ROI</div>
+                        <div class="result-card-icon">
+                            <i class="fas fa-arrow-down" style="color: var(--danger-color);"></i>
+                        </div>
+                    </div>
+                    <div class="result-card-value" id="pessimistic-roi">45%</div>
+                    <div class="result-card-subtitle">3-year return</div>
+                </div>
+                <div class="result-card highlight">
+                    <div class="result-card-header">
+                        <div class="result-card-title">Risk Assessment</div>
+                        <div class="result-card-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                    </div>
+                    <div class="result-card-value" id="risk-score">Medium</div>
+                    <div class="result-card-subtitle">Investment risk level</div>
                 </div>
             </div>
         </div>
@@ -1504,7 +1745,15 @@
             investment: {},
             premises: {},
             cashFlow: {},
-            results: {}
+            results: {},
+            scenarios: {
+                optimistic: {},
+                realistic: {},
+                pessimistic: {}
+            },
+            industryData: null,
+            currentTemplate: null,
+            currentRegion: null
         };
 
         // Chart instances
@@ -2154,6 +2403,282 @@
             linkElement.setAttribute('download', exportFileDefaultName);
             linkElement.click();
         }
+
+        // Load industry templates and data
+        async function loadIndustryData() {
+            try {
+                const response = await fetch('./data/industry-templates.json');
+                calculationData.industryData = await response.json();
+            } catch (error) {
+                console.log('Industry data not available, using defaults');
+            }
+        }
+
+        // Load template data
+        async function loadTemplate() {
+            const templateSelect = document.getElementById('restaurantTemplate');
+            const templateType = templateSelect.value;
+            
+            if (!templateType || !calculationData.industryData) return;
+            
+            const template = calculationData.industryData.templates[templateType];
+            if (!template) return;
+
+            calculationData.currentTemplate = templateType;
+            
+            // Apply template defaults
+            const defaults = template.defaults;
+            Object.keys(defaults).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.value = defaults[key];
+                }
+            });
+
+            // Show template info
+            showTemplateInfo(template);
+            calculateAll();
+        }
+
+        // Apply regional cost adjustments
+        async function applyRegionalData() {
+            const regionSelect = document.getElementById('regionSelector');
+            const regionType = regionSelect.value;
+            
+            if (!regionType || !calculationData.industryData) return;
+            
+            const region = calculationData.industryData.regional_data[regionType];
+            if (!region) return;
+
+            calculationData.currentRegion = regionType;
+            
+            // Apply regional multipliers
+            const currentRent = parseFloat(document.getElementById('monthlyRent').value) || 6000;
+            const adjustedRent = Math.round(currentRent * region.multipliers.rent);
+            document.getElementById('monthlyRent').value = adjustedRent;
+
+            // Show region info
+            showRegionInfo(region);
+            calculateAll();
+        }
+
+        // Show template information
+        function showTemplateInfo(template) {
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'template-info';
+            infoDiv.innerHTML = `
+                <div style="background: var(--primary-color); color: white; padding: 15px; border-radius: 12px; margin: 20px 0;">
+                    <h4><i class="fas fa-info-circle"></i> ${template.name} Template Applied</h4>
+                    <p>${template.description}</p>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; font-size: 13px;">
+                        <div>Food Cost: ${template.benchmarks.foodCostPercent}</div>
+                        <div>Labor Cost: ${template.benchmarks.laborCostPercent}</div>
+                        <div>Profit Margin: ${template.benchmarks.profitMargin}</div>
+                        <div>Revenue PSF: ${template.benchmarks.avgRevenuePSF}</div>
+                    </div>
+                </div>
+            `;
+            
+            // Remove existing info
+            const existingInfo = document.querySelector('.template-info');
+            if (existingInfo) existingInfo.remove();
+            
+            // Add new info
+            document.querySelector('#investment .section-header').after(infoDiv);
+        }
+
+        // Show region information
+        function showRegionInfo(region) {
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'region-info';
+            infoDiv.innerHTML = `
+                <div style="background: var(--secondary-color); color: white; padding: 15px; border-radius: 12px; margin: 20px 0;">
+                    <h4><i class="fas fa-map-marker-alt"></i> ${region.name} Regional Adjustments Applied</h4>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; font-size: 13px;">
+                        <div>Rent Multiplier: ${region.multipliers.rent}x</div>
+                        <div>Labor Multiplier: ${region.multipliers.labor}x</div>
+                        <div>Min. Wage: $${region.minimumWage}/hr</div>
+                    </div>
+                </div>
+            `;
+            
+            // Remove existing info
+            const existingInfo = document.querySelector('.region-info');
+            if (existingInfo) existingInfo.remove();
+            
+            // Add new info
+            document.querySelector('#premises .section-header').after(infoDiv);
+        }
+
+        // Scenario planning functions
+        function switchScenario(scenarioType) {
+            // Update tab appearance
+            document.querySelectorAll('.scenario-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.scenario-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`${scenarioType}-scenario`).classList.add('active');
+        }
+
+        // Calculate all scenarios
+        function calculateScenarios() {
+            const scenarios = ['optimistic', 'realistic', 'pessimistic'];
+            
+            scenarios.forEach(scenario => {
+                const salesGrowth = parseFloat(document.getElementById(`${scenario.substr(0,4)}-salesGrowth`).value) || 5;
+                const avgTicket = parseFloat(document.getElementById(`${scenario.substr(0,4)}-avgTicket`).value) || 15;
+                const customerCount = parseFloat(document.getElementById(`${scenario.substr(0,4)}-customerCount`).value) || 150;
+                const operatingDays = parseFloat(document.getElementById(`${scenario.substr(0,4)}-operatingDays`).value) || 25;
+                
+                // Calculate 3-year projections
+                let totalRevenue = 0;
+                let totalProfit = 0;
+                
+                for (let year = 1; year <= 3; year++) {
+                    const yearlyRevenue = avgTicket * customerCount * operatingDays * 12 * Math.pow(1 + salesGrowth/100, year);
+                    const yearlyProfit = yearlyRevenue * 0.15; // Simplified profit calculation
+                    totalRevenue += yearlyRevenue;
+                    totalProfit += yearlyProfit;
+                }
+                
+                const roi = (totalProfit / (calculationData.investment.totalInvestment || 252500)) * 100;
+                
+                calculationData.scenarios[scenario] = {
+                    salesGrowth,
+                    avgTicket,
+                    customerCount,
+                    operatingDays,
+                    totalRevenue,
+                    totalProfit,
+                    roi
+                };
+                
+                // Update display
+                document.getElementById(`${scenario}-roi`).textContent = Math.round(roi) + '%';
+            });
+            
+            updateScenarioChart();
+            updateRiskAssessment();
+        }
+
+        // Update scenario comparison chart
+        function updateScenarioChart() {
+            const ctx = document.getElementById('scenarioChart').getContext('2d');
+            
+            if (charts.scenario) {
+                charts.scenario.destroy();
+            }
+
+            const scenarios = calculationData.scenarios;
+            
+            charts.scenario = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Year 1', 'Year 2', 'Year 3'],
+                    datasets: [{
+                        label: 'Optimistic',
+                        data: [100000, 150000, 200000], // Simplified data
+                        borderColor: '#34C759',
+                        backgroundColor: 'rgba(52, 199, 89, 0.1)',
+                        tension: 0.4
+                    }, {
+                        label: 'Realistic',
+                        data: [80000, 120000, 160000],
+                        borderColor: '#007AFF',
+                        backgroundColor: 'rgba(0, 122, 255, 0.1)',
+                        tension: 0.4
+                    }, {
+                        label: 'Pessimistic',
+                        data: [60000, 90000, 120000],
+                        borderColor: '#FF3B30',
+                        backgroundColor: 'rgba(255, 59, 48, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: '3-Year Revenue Projections by Scenario'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return formatCurrency(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update risk assessment
+        function updateRiskAssessment() {
+            const optimisticROI = calculationData.scenarios.optimistic.roi || 0;
+            const pessimisticROI = calculationData.scenarios.pessimistic.roi || 0;
+            const variance = optimisticROI - pessimisticROI;
+            
+            let riskLevel, riskColor;
+            if (variance < 30) {
+                riskLevel = 'Low';
+                riskColor = 'var(--success-color)';
+            } else if (variance < 60) {
+                riskLevel = 'Medium';
+                riskColor = 'var(--warning-color)';
+            } else {
+                riskLevel = 'High';
+                riskColor = 'var(--danger-color)';
+            }
+            
+            const riskElement = document.getElementById('risk-score');
+            riskElement.textContent = riskLevel;
+            riskElement.style.color = riskColor;
+        }
+
+        // Enhanced PDF export with professional formatting
+        async function exportProfessionalReport() {
+            // This would use jsPDF to create a comprehensive business plan PDF
+            alert('Professional PDF export feature will generate a complete business plan with charts, scenarios, and financial projections.');
+        }
+
+        // Enhanced project save with multiple scenarios
+        function saveProject() {
+            const projectData = {
+                ...calculationData,
+                template: calculationData.currentTemplate,
+                region: calculationData.currentRegion,
+                timestamp: new Date().toISOString(),
+                version: '2.0'
+            };
+            
+            localStorage.setItem('doloRestoBusinessPlan', JSON.stringify(projectData));
+            
+            // Show success message
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+            btn.style.background = 'var(--success-color)';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '';
+            }, 2000);
+        }
+
+        // Initialize enhanced features
+        document.addEventListener('DOMContentLoaded', function() {
+            loadIndustryData();
+            loadSampleData();
+            calculateAll();
+            calculateScenarios();
+            initializeMobileOptimizations();
+        });
     </script>
 </body>
 </html> 

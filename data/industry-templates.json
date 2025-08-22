@@ -1,0 +1,238 @@
+{
+  "templates": {
+    "fast_food": {
+      "name": "Fast Food Restaurant",
+      "description": "Quick service restaurant with high volume, low ticket",
+      "defaults": {
+        "avgTicketInStore": 12,
+        "avgTicketDelivery": 15,
+        "costOfGoodsSold": 28,
+        "laborCostPercent": 30,
+        "rentPerSqFt": 35,
+        "seatingCapacity": 40,
+        "turnoverRate": 8,
+        "operatingHours": 14
+      },
+      "benchmarks": {
+        "foodCostPercent": "25-30%",
+        "laborCostPercent": "28-32%",
+        "profitMargin": "6-9%",
+        "avgRevenuePSF": "$400-600"
+      }
+    },
+    "fine_dining": {
+      "name": "Fine Dining Restaurant",
+      "description": "Upscale dining with premium ingredients and service",
+      "defaults": {
+        "avgTicketInStore": 85,
+        "avgTicketDelivery": 95,
+        "costOfGoodsSold": 32,
+        "laborCostPercent": 35,
+        "rentPerSqFt": 65,
+        "seatingCapacity": 80,
+        "turnoverRate": 2.5,
+        "operatingHours": 10
+      },
+      "benchmarks": {
+        "foodCostPercent": "28-35%",
+        "laborCostPercent": "32-38%",
+        "profitMargin": "3-6%",
+        "avgRevenuePSF": "$300-500"
+      }
+    },
+    "casual_dining": {
+      "name": "Casual Dining Restaurant",
+      "description": "Family-friendly restaurant with table service",
+      "defaults": {
+        "avgTicketInStore": 35,
+        "avgTicketDelivery": 40,
+        "costOfGoodsSold": 30,
+        "laborCostPercent": 32,
+        "rentPerSqFt": 45,
+        "seatingCapacity": 120,
+        "turnoverRate": 3.5,
+        "operatingHours": 12
+      },
+      "benchmarks": {
+        "foodCostPercent": "28-32%",
+        "laborCostPercent": "30-35%",
+        "profitMargin": "4-7%",
+        "avgRevenuePSF": "$350-550"
+      }
+    },
+    "cafe_coffee": {
+      "name": "Café & Coffee Shop",
+      "description": "Coffee-focused establishment with light food",
+      "defaults": {
+        "avgTicketInStore": 8,
+        "avgTicketDelivery": 12,
+        "costOfGoodsSold": 25,
+        "laborCostPercent": 28,
+        "rentPerSqFt": 40,
+        "seatingCapacity": 30,
+        "turnoverRate": 12,
+        "operatingHours": 12
+      },
+      "benchmarks": {
+        "foodCostPercent": "20-28%",
+        "laborCostPercent": "25-30%",
+        "profitMargin": "8-12%",
+        "avgRevenuePSF": "$500-800"
+      }
+    },
+    "food_truck": {
+      "name": "Food Truck",
+      "description": "Mobile food service with limited menu",
+      "defaults": {
+        "avgTicketInStore": 15,
+        "avgTicketDelivery": 0,
+        "costOfGoodsSold": 30,
+        "laborCostPercent": 25,
+        "rentPerSqFt": 0,
+        "monthlyTruckPayment": 1200,
+        "operatingHours": 8
+      },
+      "benchmarks": {
+        "foodCostPercent": "25-32%",
+        "laborCostPercent": "20-28%",
+        "profitMargin": "7-15%",
+        "avgDailySales": "$800-2000"
+      }
+    },
+    "ghost_kitchen": {
+      "name": "Ghost Kitchen",
+      "description": "Delivery-only kitchen with no dining room",
+      "defaults": {
+        "avgTicketInStore": 0,
+        "avgTicketDelivery": 25,
+        "costOfGoodsSold": 32,
+        "laborCostPercent": 20,
+        "rentPerSqFt": 15,
+        "deliveryFeePercent": 25,
+        "operatingHours": 12
+      },
+      "benchmarks": {
+        "foodCostPercent": "28-35%",
+        "laborCostPercent": "18-25%",
+        "profitMargin": "8-15%",
+        "deliveryPercent": "100%"
+      }
+    }
+  },
+  "regional_data": {
+    "new_york": {
+      "name": "New York City",
+      "multipliers": {
+        "rent": 2.8,
+        "labor": 1.6,
+        "utilities": 1.4
+      },
+      "minimumWage": 15.00,
+      "avgRentPSF": 85
+    },
+    "los_angeles": {
+      "name": "Los Angeles",
+      "multipliers": {
+        "rent": 2.2,
+        "labor": 1.4,
+        "utilities": 1.3
+      },
+      "minimumWage": 16.78,
+      "avgRentPSF": 65
+    },
+    "chicago": {
+      "name": "Chicago",
+      "multipliers": {
+        "rent": 1.5,
+        "labor": 1.2,
+        "utilities": 1.1
+      },
+      "minimumWage": 15.00,
+      "avgRentPSF": 45
+    },
+    "dallas": {
+      "name": "Dallas",
+      "multipliers": {
+        "rent": 1.2,
+        "labor": 1.0,
+        "utilities": 1.0
+      },
+      "minimumWage": 7.25,
+      "avgRentPSF": 35
+    },
+    "miami": {
+      "name": "Miami",
+      "multipliers": {
+        "rent": 1.8,
+        "labor": 1.1,
+        "utilities": 1.2
+      },
+      "minimumWage": 11.00,
+      "avgRentPSF": 55
+    }
+  },
+  "seasonal_adjustments": {
+    "restaurant": {
+      "january": 0.85,
+      "february": 0.90,
+      "march": 1.05,
+      "april": 1.10,
+      "may": 1.15,
+      "june": 1.20,
+      "july": 1.25,
+      "august": 1.20,
+      "september": 1.10,
+      "october": 1.05,
+      "november": 1.15,
+      "december": 1.30
+    },
+    "cafe": {
+      "january": 0.80,
+      "february": 0.85,
+      "march": 1.00,
+      "april": 1.10,
+      "may": 1.20,
+      "june": 1.25,
+      "july": 1.30,
+      "august": 1.25,
+      "september": 1.15,
+      "october": 1.10,
+      "november": 1.00,
+      "december": 1.20
+    }
+  },
+  "equipment_costs": {
+    "kitchen_basic": {
+      "name": "Basic Kitchen Setup",
+      "items": {
+        "commercial_range": 8500,
+        "refrigerator": 4500,
+        "freezer": 3200,
+        "prep_tables": 2800,
+        "dishwasher": 6500,
+        "hood_system": 12000,
+        "smallwares": 5000
+      },
+      "total": 42500
+    },
+    "kitchen_premium": {
+      "name": "Premium Kitchen Setup",
+      "items": {
+        "commercial_range": 15000,
+        "combi_oven": 25000,
+        "walk_in_cooler": 18000,
+        "walk_in_freezer": 15000,
+        "prep_equipment": 8000,
+        "dishwasher_conveyor": 15000,
+        "hood_system": 20000,
+        "smallwares": 8000
+      },
+      "total": 124000
+    },
+    "pos_systems": {
+      "basic": 3500,
+      "advanced": 8500,
+      "enterprise": 15000
+    }
+  }
+} 
