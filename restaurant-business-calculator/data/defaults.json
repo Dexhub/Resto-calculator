@@ -1,0 +1,219 @@
+{
+  "templates": {
+    "quickService": {
+      "name": "Quick Service Restaurant",
+      "description": "Fast food or quick service restaurant template",
+      "data": {
+        "investment": {
+          "businessSetup": {
+            "civilWorks": { "quantity": 1, "unitCost": 120000 },
+            "equipment": { "quantity": 1, "unitCost": 40000 },
+            "inventory": { "quantity": 1, "unitCost": 10000 }
+          },
+          "workingCapital": 30000,
+          "preOperational": {
+            "marketing": 5000,
+            "deposits": 10000,
+            "insurance": 3000
+          }
+        },
+        "premises": {
+          "workingDays": 26,
+          "averageTicket": { "inStore": 12, "delivery": 15 },
+          "ticketRatio": { "inStore": 0.7, "delivery": 0.3 },
+          "itemsPerTicket": 4
+        }
+      }
+    },
+    "casualDining": {
+      "name": "Casual Dining Restaurant",
+      "description": "Sit-down restaurant with table service",
+      "data": {
+        "investment": {
+          "businessSetup": {
+            "civilWorks": { "quantity": 1, "unitCost": 200000 },
+            "equipment": { "quantity": 1, "unitCost": 60000 },
+            "inventory": { "quantity": 1, "unitCost": 20000 }
+          },
+          "workingCapital": 60000,
+          "preOperational": {
+            "marketing": 10000,
+            "deposits": 15000,
+            "insurance": 5000
+          }
+        },
+        "premises": {
+          "workingDays": 24,
+          "averageTicket": { "inStore": 25, "delivery": 30 },
+          "ticketRatio": { "inStore": 0.85, "delivery": 0.15 },
+          "itemsPerTicket": 6
+        }
+      }
+    },
+    "fineDining": {
+      "name": "Fine Dining Restaurant",
+      "description": "Upscale restaurant with premium service",
+      "data": {
+        "investment": {
+          "businessSetup": {
+            "civilWorks": { "quantity": 1, "unitCost": 350000 },
+            "equipment": { "quantity": 1, "unitCost": 100000 },
+            "inventory": { "quantity": 1, "unitCost": 40000 }
+          },
+          "workingCapital": 100000,
+          "preOperational": {
+            "marketing": 20000,
+            "deposits": 25000,
+            "insurance": 8000
+          }
+        },
+        "premises": {
+          "workingDays": 22,
+          "averageTicket": { "inStore": 75, "delivery": 85 },
+          "ticketRatio": { "inStore": 0.95, "delivery": 0.05 },
+          "itemsPerTicket": 8
+        }
+      }
+    },
+    "foodTruck": {
+      "name": "Food Truck",
+      "description": "Mobile food service vehicle",
+      "data": {
+        "investment": {
+          "businessSetup": {
+            "civilWorks": { "quantity": 0, "unitCost": 0 },
+            "equipment": { "quantity": 1, "unitCost": 80000 },
+            "inventory": { "quantity": 1, "unitCost": 5000 }
+          },
+          "workingCapital": 15000,
+          "preOperational": {
+            "marketing": 3000,
+            "deposits": 2000,
+            "insurance": 4000
+          }
+        },
+        "premises": {
+          "workingDays": 20,
+          "averageTicket": { "inStore": 10, "delivery": 0 },
+          "ticketRatio": { "inStore": 1.0, "delivery": 0 },
+          "itemsPerTicket": 3
+        }
+      }
+    },
+    "cafe": {
+      "name": "Coffee Shop / Cafe",
+      "description": "Coffee and light food service",
+      "data": {
+        "investment": {
+          "businessSetup": {
+            "civilWorks": { "quantity": 1, "unitCost": 80000 },
+            "equipment": { "quantity": 1, "unitCost": 35000 },
+            "inventory": { "quantity": 1, "unitCost": 8000 }
+          },
+          "workingCapital": 25000,
+          "preOperational": {
+            "marketing": 4000,
+            "deposits": 8000,
+            "insurance": 2500
+          }
+        },
+        "premises": {
+          "workingDays": 28,
+          "averageTicket": { "inStore": 8, "delivery": 10 },
+          "ticketRatio": { "inStore": 0.8, "delivery": 0.2 },
+          "itemsPerTicket": 2.5
+        }
+      }
+    }
+  },
+  "industryBenchmarks": {
+    "costRatios": {
+      "foodCost": { "min": 0.25, "max": 0.35, "ideal": 0.30 },
+      "laborCost": { "min": 0.25, "max": 0.35, "ideal": 0.30 },
+      "primeCost": { "min": 0.55, "max": 0.65, "ideal": 0.60 },
+      "rent": { "min": 0.04, "max": 0.08, "ideal": 0.06 },
+      "utilities": { "min": 0.03, "max": 0.06, "ideal": 0.05 },
+      "marketing": { "min": 0.02, "max": 0.05, "ideal": 0.03 }
+    },
+    "profitMargins": {
+      "quickService": { "min": 0.05, "max": 0.15, "average": 0.10 },
+      "casualDining": { "min": 0.03, "max": 0.10, "average": 0.065 },
+      "fineDining": { "min": 0.03, "max": 0.12, "average": 0.075 },
+      "cafe": { "min": 0.08, "max": 0.18, "average": 0.13 }
+    },
+    "operationalMetrics": {
+      "seatsPerSqFt": 0.6,
+      "revenuePerSeat": { "annual": { "min": 5000, "max": 20000 } },
+      "tablesTurnover": {
+        "quickService": 12,
+        "casualDining": 3,
+        "fineDining": 2
+      }
+    }
+  },
+  "seasonalFactors": {
+    "january": 0.85,
+    "february": 0.90,
+    "march": 0.95,
+    "april": 1.00,
+    "may": 1.05,
+    "june": 1.10,
+    "july": 1.15,
+    "august": 1.15,
+    "september": 1.10,
+    "october": 1.05,
+    "november": 1.00,
+    "december": 1.20
+  },
+  "growthAssumptions": {
+    "year1to2": 0.257,
+    "year2to3": 0.15,
+    "year3to4": 0.10,
+    "year4to5": 0.08
+  },
+  "riskFactors": {
+    "high": {
+      "description": "New concept, no experience",
+      "adjustment": 0.20
+    },
+    "medium": {
+      "description": "Some experience, proven concept",
+      "adjustment": 0.10
+    },
+    "low": {
+      "description": "Experienced team, established brand",
+      "adjustment": 0.05
+    }
+  },
+  "financingOptions": {
+    "sbaLoan": {
+      "name": "SBA Loan",
+      "rate": 0.07,
+      "term": 10,
+      "downPayment": 0.10
+    },
+    "bankLoan": {
+      "name": "Traditional Bank Loan",
+      "rate": 0.08,
+      "term": 7,
+      "downPayment": 0.20
+    },
+    "investor": {
+      "name": "Investor/Partner",
+      "equityShare": 0.30,
+      "expectedReturn": 0.25
+    }
+  },
+  "validationRules": {
+    "investment": {
+      "minTotal": 50000,
+      "maxTotal": 5000000,
+      "workingCapitalRatio": { "min": 0.10, "max": 0.30 }
+    },
+    "operations": {
+      "workingDays": { "min": 15, "max": 31 },
+      "averageTicket": { "min": 5, "max": 200 },
+      "itemsPerTicket": { "min": 1, "max": 20 }
+    }
+  }
+}

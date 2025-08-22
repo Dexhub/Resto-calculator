@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Business Plan Calculator - Professional Financial Planning Tool</title>
+    <meta name="description" content="Comprehensive restaurant business planning tool with investment calculations, cash flow projections, and financial analysis">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animations.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- jsPDF for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="logo-section">
+                <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                    <path d="M16 2L2 10v12c0 1.1.9 2 2 2h24c1.1 0 2-.9 2-2V10L16 2z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M10 16h12M10 20h12" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <h1 class="app-title">Restaurant Business Planner</h1>
+            </div>
+            <div class="header-actions">
+                <button class="btn-icon" id="saveBtn" title="Save Current Plan">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M17 6L9 14l-5-5" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </button>
+                <button class="btn-icon" id="loadBtn" title="Load Saved Plan">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M3 12V7a7 7 0 0114 0v5M10 10v8" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </button>
+                <button class="btn-icon" id="exportBtn" title="Export to PDF">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M10 3v10M7 10l3 3 3-3M4 17h12" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </button>
+                <button class="btn-icon" id="helpBtn" title="Help & Tutorial">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2"/>
+                        <path d="M10 14v0M10 10V6" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <button class="nav-tab active" data-tab="investment">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 2v16M6 6h8M5 10h10M7 14h6" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>Investment</span>
+            </button>
+            <button class="nav-tab" data-tab="premises">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <rect x="3" y="3" width="14" height="14" stroke="currentColor" stroke-width="2"/>
+                    <path d="M7 7h6M7 10h6M7 13h3" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>Premises</span>
+            </button>
+            <button class="nav-tab" data-tab="cashflow">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M3 10h14M10 3v14M7 13l3-3 3 3" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>Cash Flow</span>
+            </button>
+            <button class="nav-tab" data-tab="results">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M3 17V7l4 4 4-8 4 8 2-2v8H3z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>Results</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Investment Tab -->
+        <section class="tab-content active" id="investment-tab">
+            <div class="content-container">
+                <div class="section-header">
+                    <h2>Initial Investment Calculator</h2>
+                    <p class="section-description">Calculate your startup costs and initial capital requirements</p>
+                </div>
+
+                <div class="content-grid">
+                    <!-- Business Setup Section -->
+                    <div class="card">
+                        <h3 class="card-title">1. Business Setup</h3>
+                        <div class="input-group">
+                            <label for="civil-works">Basic Civil Works</label>
+                            <div class="input-row">
+                                <input type="number" id="civil-works-qty" placeholder="Quantity" class="input-small">
+                                <input type="number" id="civil-works-cost" placeholder="Unit Cost ($)" class="input-medium">
+                                <input type="number" id="civil-works-total" placeholder="Total" class="input-medium" readonly>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="equipment">Equipment and Furniture</label>
+                            <div class="input-row">
+                                <input type="number" id="equipment-qty" placeholder="Quantity" class="input-small">
+                                <input type="number" id="equipment-cost" placeholder="Unit Cost ($)" class="input-medium">
+                                <input type="number" id="equipment-total" placeholder="Total" class="input-medium" readonly>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="inventory">Initial Stock/Inventory</label>
+                            <div class="input-row">
+                                <input type="number" id="inventory-qty" placeholder="Quantity" class="input-small">
+                                <input type="number" id="inventory-cost" placeholder="Unit Cost ($)" class="input-medium">
+                                <input type="number" id="inventory-total" placeholder="Total" class="input-medium" readonly>
+                            </div>
+                        </div>
+                        <div class="subtotal-row">
+                            <span>Subtotal Business Setup:</span>
+                            <span class="subtotal-value" id="setup-subtotal">$0</span>
+                        </div>
+                    </div>
+
+                    <!-- Working Capital Section -->
+                    <div class="card">
+                        <h3 class="card-title">2. Working Capital</h3>
+                        <div class="input-group">
+                            <label for="working-capital">Working Capital Required</label>
+                            <input type="number" id="working-capital" placeholder="Amount ($)" class="input-full">
+                            <span class="input-hint">Recommended: 3-6 months of operating expenses</span>
+                        </div>
+                    </div>
+
+                    <!-- Pre-Operational Expenses -->
+                    <div class="card">
+                        <h3 class="card-title">3. Pre-Operational Expenses</h3>
+                        <div class="input-group">
+                            <label for="marketing">Marketing & Promotion</label>
+                            <input type="number" id="marketing" placeholder="Amount ($)" class="input-full">
+                        </div>
+                        <div class="input-group">
+                            <label for="deposits">Deposits (Rent, Utilities)</label>
+                            <input type="number" id="deposits" placeholder="Amount ($)" class="input-full">
+                        </div>
+                        <div class="input-group">
+                            <label for="insurance">Insurance & Licenses</label>
+                            <input type="number" id="insurance" placeholder="Amount ($)" class="input-full">
+                        </div>
+                        <div class="subtotal-row">
+                            <span>Subtotal Pre-Operational:</span>
+                            <span class="subtotal-value" id="preop-subtotal">$0</span>
+                        </div>
+                    </div>
+
+                    <!-- Total Investment Summary -->
+                    <div class="card card-highlight">
+                        <h3 class="card-title">Total Investment Summary</h3>
+                        <div class="summary-grid">
+                            <div class="summary-item">
+                                <span class="summary-label">Business Setup</span>
+                                <span class="summary-value" id="summary-setup">$0</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Working Capital</span>
+                                <span class="summary-value" id="summary-working">$0</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Pre-Operational</span>
+                                <span class="summary-value" id="summary-preop">$0</span>
+                            </div>
+                            <div class="summary-item summary-total">
+                                <span class="summary-label">Total Investment Required</span>
+                                <span class="summary-value" id="total-investment">$0</span>
+                            </div>
+                        </div>
+                        <canvas id="investment-chart" class="chart-container"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Premises Tab -->
+        <section class="tab-content" id="premises-tab">
+            <div class="content-container">
+                <div class="section-header">
+                    <h2>Premises & Operations Setup</h2>
+                    <p class="section-description">Define your restaurant's operational parameters and assumptions</p>
+                </div>
+
+                <div class="content-grid">
+                    <!-- Operating Parameters -->
+                    <div class="card">
+                        <h3 class="card-title">Operating Parameters</h3>
+                        <div class="input-group">
+                            <label for="working-days">Working Days per Month</label>
+                            <input type="number" id="working-days" value="20" min="1" max="31" class="input-full">
+                        </div>
+                        <div class="input-group">
+                            <label for="avg-items">Average Items per Ticket</label>
+                            <input type="number" id="avg-items" value="6" min="1" class="input-full">
+                        </div>
+                    </div>
+
+                    <!-- Pricing Strategy -->
+                    <div class="card">
+                        <h3 class="card-title">Pricing Strategy</h3>
+                        <div class="input-group">
+                            <label for="ticket-instore">Average Ticket - In Store ($)</label>
+                            <input type="number" id="ticket-instore" value="15" step="0.01" class="input-full">
+                        </div>
+                        <div class="input-group">
+                            <label for="ticket-delivery">Average Ticket - Delivery ($)</label>
+                            <input type="number" id="ticket-delivery" value="15" step="0.01" class="input-full">
+                        </div>
+                    </div>
+
+                    <!-- Sales Distribution -->
+                    <div class="card">
+                        <h3 class="card-title">Sales Distribution</h3>
+                        <div class="input-group">
+                            <label for="ratio-instore">In-Store Sales Ratio (%)</label>
+                            <input type="range" id="ratio-instore" min="0" max="100" value="50" class="input-range">
+                            <span class="range-value" id="ratio-instore-value">50%</span>
+                        </div>
+                        <div class="input-group">
+                            <label for="ratio-delivery">Delivery Sales Ratio (%)</label>
+                            <input type="range" id="ratio-delivery" min="0" max="100" value="50" class="input-range" readonly>
+                            <span class="range-value" id="ratio-delivery-value">50%</span>
+                        </div>
+                    </div>
+
+                    <!-- Projections -->
+                    <div class="card card-highlight">
+                        <h3 class="card-title">Monthly Projections</h3>
+                        <div class="projection-grid">
+                            <div class="projection-item">
+                                <span class="projection-label">Expected Monthly Tickets</span>
+                                <span class="projection-value" id="monthly-tickets">1,333</span>
+                            </div>
+                            <div class="projection-item">
+                                <span class="projection-label">Daily Average Tickets</span>
+                                <span class="projection-value" id="daily-tickets">67</span>
+                            </div>
+                            <div class="projection-item">
+                                <span class="projection-label">Monthly Revenue Projection</span>
+                                <span class="projection-value" id="monthly-revenue">$20,000</span>
+                            </div>
+                        </div>
+                        <canvas id="premises-chart" class="chart-container"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cash Flow Tab -->
+        <section class="tab-content" id="cashflow-tab">
+            <div class="content-container">
+                <div class="section-header">
+                    <h2>Cash Flow Projections</h2>
+                    <p class="section-description">Monthly cash flow analysis for Year 1 and Year 2</p>
+                </div>
+
+                <!-- Year Selection -->
+                <div class="year-selector">
+                    <button class="year-btn active" data-year="1">Year 1</button>
+                    <button class="year-btn" data-year="2">Year 2</button>
+                </div>
+
+                <!-- Cash Flow Table -->
+                <div class="cashflow-table-container">
+                    <table class="cashflow-table" id="cashflow-table">
+                        <!-- Table will be populated by JavaScript -->
+                    </table>
+                </div>
+
+                <!-- Cash Flow Chart -->
+                <div class="card">
+                    <h3 class="card-title">Cash Flow Visualization</h3>
+                    <canvas id="cashflow-chart" class="chart-container-large"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Tab -->
+        <section class="tab-content" id="results-tab">
+            <div class="content-container">
+                <div class="section-header">
+                    <h2>Financial Results & Analysis</h2>
+                    <p class="section-description">Comprehensive financial performance overview</p>
+                </div>
+
+                <div class="results-grid">
+                    <!-- Key Metrics Dashboard -->
+                    <div class="metrics-dashboard">
+                        <div class="metric-card positive">
+                            <div class="metric-header">
+                                <span class="metric-label">Year 1 Revenue</span>
+                                <svg class="trend-icon up" width="16" height="16">
+                                    <path d="M8 4l4 4-4 4" stroke="currentColor" fill="none"/>
+                                </svg>
+                            </div>
+                            <div class="metric-value" id="year1-revenue">$266,700</div>
+                            <div class="metric-change">+0% from projection</div>
+                        </div>
+                        <div class="metric-card positive">
+                            <div class="metric-header">
+                                <span class="metric-label">Year 2 Revenue</span>
+                                <svg class="trend-icon up" width="16" height="16">
+                                    <path d="M8 4l4 4-4 4" stroke="currentColor" fill="none"/>
+                                </svg>
+                            </div>
+                            <div class="metric-value" id="year2-revenue">$335,280</div>
+                            <div class="metric-change">+25.7% growth</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-header">
+                                <span class="metric-label">Net Profit Margin</span>
+                            </div>
+                            <div class="metric-value" id="profit-margin">15.3%</div>
+                            <div class="metric-change">Industry avg: 10-15%</div>
+                        </div>
+                        <div class="metric-card highlight">
+                            <div class="metric-header">
+                                <span class="metric-label">ROI</span>
+                            </div>
+                            <div class="metric-value" id="roi">32.5%</div>
+                            <div class="metric-change">Payback: 3.1 years</div>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Analysis -->
+                    <div class="card">
+                        <h3 class="card-title">Profitability Analysis</h3>
+                        <canvas id="profitability-chart" class="chart-container"></canvas>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title">Break-Even Analysis</h3>
+                        <div class="breakeven-info">
+                            <div class="info-item">
+                                <span class="info-label">Break-Even Point</span>
+                                <span class="info-value" id="breakeven-months">8 months</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Monthly Break-Even Sales</span>
+                                <span class="info-value" id="breakeven-sales">$18,500</span>
+                            </div>
+                        </div>
+                        <canvas id="breakeven-chart" class="chart-container"></canvas>
+                    </div>
+
+                    <!-- Financial Summary -->
+                    <div class="card card-highlight">
+                        <h3 class="card-title">Financial Summary</h3>
+                        <div class="summary-table">
+                            <div class="summary-row">
+                                <span>Total Investment</span>
+                                <span id="results-investment">$270,000</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Year 1 Net Income</span>
+                                <span id="results-year1-net">$40,850</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Year 2 Net Income</span>
+                                <span id="results-year2-net">$67,056</span>
+                            </div>
+                            <div class="summary-row highlight">
+                                <span>2-Year Total Return</span>
+                                <span id="results-total-return">$107,906</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Floating Action Buttons -->
+    <div class="fab-container">
+        <button class="fab fab-primary" id="calculate-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 4v16m8-8H4" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <span class="fab-label">Calculate</span>
+        </button>
+    </div>
+
+    <!-- Modals -->
+    <!-- Save Modal -->
+    <div class="modal" id="save-modal">
+        <div class="modal-content">
+            <h3>Save Business Plan</h3>
+            <input type="text" id="save-name" placeholder="Enter plan name..." class="input-full">
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeSaveModal()">Cancel</button>
+                <button class="btn-primary" onclick="savePlan()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Modal -->
+    <div class="modal" id="load-modal">
+        <div class="modal-content">
+            <h3>Load Business Plan</h3>
+            <div class="saved-plans-list" id="saved-plans">
+                <!-- Populated by JavaScript -->
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeLoadModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div class="modal" id="help-modal">
+        <div class="modal-content modal-large">
+            <h3>How to Use Restaurant Business Planner</h3>
+            <div class="help-content">
+                <h4>Getting Started</h4>
+                <ol>
+                    <li>Start with the <strong>Investment</strong> tab to enter your startup costs</li>
+                    <li>Move to <strong>Premises</strong> to set your operational parameters</li>
+                    <li>Review <strong>Cash Flow</strong> projections based on your inputs</li>
+                    <li>Analyze your business viability in the <strong>Results</strong> tab</li>
+                </ol>
+                
+                <h4>Tips for Success</h4>
+                <ul>
+                    <li>Be realistic with your cost estimates</li>
+                    <li>Include a buffer in your working capital</li>
+                    <li>Consider seasonal variations in sales</li>
+                    <li>Review industry benchmarks for validation</li>
+                </ul>
+                
+                <h4>Features</h4>
+                <ul>
+                    <li><strong>Auto-save</strong>: Your data is automatically saved locally</li>
+                    <li><strong>Export</strong>: Generate PDF reports for investors</li>
+                    <li><strong>Scenarios</strong>: Save multiple versions for comparison</li>
+                    <li><strong>Real-time</strong>: Calculations update as you type</li>
+                </ul>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-primary" onclick="closeHelpModal()">Got it!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/calculator.js"></script>
+    <script src="js/data-manager.js"></script>
+    <script src="js/ui-controller.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/export.js"></script>
+</body>
+</html>

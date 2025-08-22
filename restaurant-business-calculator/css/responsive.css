@@ -1,0 +1,350 @@
+/* Restaurant Business Calculator - Responsive Styles */
+
+/* Tablet Styles (768px - 1023px) */
+@media (max-width: 1023px) {
+    /* Header Adjustments */
+    .header-container {
+        padding: var(--space-3) var(--space-4);
+    }
+    
+    .app-title {
+        font-size: var(--text-lg);
+    }
+    
+    /* Navigation */
+    .nav-tab {
+        padding: var(--space-3) var(--space-2);
+        font-size: var(--text-sm);
+    }
+    
+    .nav-tab span {
+        display: none;
+    }
+    
+    .nav-tab svg {
+        width: 24px;
+        height: 24px;
+    }
+    
+    /* Content Grid */
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Metrics Dashboard */
+    .metrics-dashboard {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Modal */
+    .modal-content {
+        padding: var(--space-6);
+    }
+    
+    /* FAB */
+    .fab-container {
+        bottom: var(--space-6);
+        right: var(--space-6);
+    }
+}
+
+/* Mobile Styles (640px and below) */
+@media (max-width: 640px) {
+    /* Header */
+    .header-container {
+        padding: var(--space-3);
+    }
+    
+    .app-title {
+        font-size: var(--text-base);
+        font-weight: var(--font-semibold);
+    }
+    
+    .header-actions {
+        gap: var(--space-1);
+    }
+    
+    .btn-icon {
+        width: 36px;
+        height: 36px;
+    }
+    
+    /* Navigation */
+    .nav-container {
+        padding: 0;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .nav-tab {
+        flex: 0 0 auto;
+        padding: var(--space-3);
+    }
+    
+    /* Main Content */
+    .main-content {
+        padding: var(--space-4) var(--space-3);
+    }
+    
+    /* Section Header */
+    .section-header h2 {
+        font-size: var(--text-xl);
+    }
+    
+    .section-description {
+        font-size: var(--text-base);
+    }
+    
+    /* Cards */
+    .card {
+        padding: var(--space-4);
+        margin-bottom: var(--space-4);
+    }
+    
+    .card-title {
+        font-size: var(--text-lg);
+    }
+    
+    /* Input Groups */
+    .input-row {
+        flex-direction: column;
+    }
+    
+    .input-small,
+    .input-medium {
+        width: 100%;
+    }
+    
+    /* Projection Grid */
+    .projection-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-3);
+    }
+    
+    /* Metrics Dashboard */
+    .metrics-dashboard {
+        grid-template-columns: 1fr;
+        gap: var(--space-3);
+    }
+    
+    .metric-card {
+        padding: var(--space-4);
+    }
+    
+    .metric-value {
+        font-size: var(--text-2xl);
+    }
+    
+    /* Year Selector */
+    .year-selector {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .year-btn {
+        flex: 1;
+    }
+    
+    /* Cash Flow Table */
+    .cashflow-table {
+        font-size: var(--text-sm);
+    }
+    
+    .cashflow-table th,
+    .cashflow-table td {
+        padding: var(--space-2) var(--space-3);
+    }
+    
+    /* Modals */
+    .modal-content {
+        width: 95%;
+        padding: var(--space-4);
+        margin: var(--space-4);
+    }
+    
+    .modal-content h3 {
+        font-size: var(--text-lg);
+        margin-bottom: var(--space-4);
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+    
+    .modal-actions button {
+        width: 100%;
+    }
+    
+    /* FAB */
+    .fab-container {
+        bottom: var(--space-4);
+        right: var(--space-4);
+    }
+    
+    .fab {
+        width: 56px;
+        height: 56px;
+    }
+    
+    .fab-label {
+        display: none;
+    }
+    
+    /* Toast */
+    .toast-container {
+        top: auto;
+        bottom: var(--space-4);
+        right: var(--space-4);
+        left: var(--space-4);
+    }
+    
+    .toast {
+        min-width: auto;
+        width: 100%;
+    }
+    
+    /* Summary Table */
+    .summary-row {
+        font-size: var(--text-sm);
+    }
+    
+    .summary-row.highlight {
+        margin: 0 calc(-1 * var(--space-2));
+        padding: var(--space-3);
+    }
+    
+    /* Info Items */
+    .breakeven-info {
+        grid-template-columns: 1fr;
+        gap: var(--space-3);
+    }
+    
+    /* Button Text */
+    .btn-primary,
+    .btn-secondary {
+        padding: var(--space-3) var(--space-4);
+        font-size: var(--text-sm);
+    }
+}
+
+/* Small Mobile (480px and below) */
+@media (max-width: 480px) {
+    /* Typography Adjustments */
+    :root {
+        --text-3xl: 1.75rem;
+        --text-2xl: 1.25rem;
+        --text-xl: 1.125rem;
+    }
+    
+    /* Header */
+    .logo-icon {
+        width: 24px;
+        height: 24px;
+    }
+    
+    /* Charts */
+    .chart-container {
+        height: 250px;
+    }
+    
+    .chart-container-large {
+        height: 300px;
+    }
+    
+    /* Projection Values */
+    .projection-value {
+        font-size: var(--text-xl);
+    }
+    
+    /* Metric Cards */
+    .metric-value {
+        font-size: var(--text-xl);
+    }
+}
+
+/* Landscape Mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+    /* Reduce vertical spacing */
+    .main-content {
+        padding: var(--space-3);
+    }
+    
+    .card {
+        padding: var(--space-3);
+        margin-bottom: var(--space-3);
+    }
+    
+    /* Hide header in landscape on small devices */
+    .app-header {
+        position: relative;
+    }
+    
+    .main-nav {
+        position: relative;
+        top: 0;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    /* Increase touch targets */
+    .btn-icon {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    .nav-tab {
+        min-height: 44px;
+    }
+    
+    input[type="text"],
+    input[type="number"] {
+        min-height: 44px;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    /* Remove hover effects */
+    .card:hover {
+        box-shadow: var(--shadow-sm);
+    }
+    
+    .metric-card:hover {
+        transform: none;
+    }
+    
+    /* Add active states */
+    .btn-icon:active,
+    .btn-primary:active,
+    .btn-secondary:active {
+        transform: scale(0.95);
+    }
+}
+
+/* High DPI Displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* Use thinner borders */
+    .card,
+    input[type="text"],
+    input[type="number"] {
+        border-width: 0.5px;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Dark Mode Support (Future Enhancement) */
+@media (prefers-color-scheme: dark) {
+    /* Dark mode styles would go here */
+}

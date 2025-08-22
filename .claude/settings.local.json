@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(pip install:*)",
+      "Bash(pip3 install:*)",
+      "Bash(source:*)",
+      "Bash(npx create-next-app:*)",
+      "Bash(npm install:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm run dev:*)",
+      "Bash(lsof:*)",
+      "Bash(curl:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx next:*)",
+      "Bash(killall:*)",
+      "Bash(true)",
+      "Bash(npx tsc:*)",
+      "Bash(echo $SHELL)",
+      "Bash(pkill:*)",
+      "Bash(node:*)",
+      "Bash(ls:*)",
+      "Bash(jq:*)"
+    ],
+    "deny": []
+  }
+}

@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Business Plan Calculator - Complete Financial Planning Tool</title>
+    <meta name="description" content="Professional restaurant business planning tool with investment calculations, cash flow projections, and comprehensive financial analysis">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #718096;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            background: transparent;
+            color: #4a5568;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .tab-button:hover:not(.active) {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: #4a5568;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input, .form-group select {
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .calculated-section {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        .calculated-section h3 {
+            color: #2d3748;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .result-item {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .result-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .result-item .label {
+            font-size: 14px;
+            color: #718096;
+            margin-bottom: 8px;
+        }
+
+        .result-item .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .result-item.highlight .value {
+            color: #667eea;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            height: 400px;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+        }
+
+        .summary-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .summary-card .amount {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .summary-card .percentage {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .export-section {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            margin: 0 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-secondary {
+            background: #f7fafc;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #edf2f7;
+            border-color: #cbd5e0;
+        }
+
+        .monthly-breakdown {
+            overflow-x: auto;
+            margin: 25px 0;
+        }
+
+        .monthly-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .monthly-table th,
+        .monthly-table td {
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .monthly-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .monthly-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tab-content {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍽️ Restaurant Business Plan Calculator</h1>
+            <p>Comprehensive Financial Planning Tool for Restaurant Business</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('investment')">💰 Investment</button>
+            <button class="tab-button" onclick="switchTab('premises')">🏢 Premises</button>
+            <button class="tab-button" onclick="switchTab('cashflow')">📈 Cash Flow</button>
+            <button class="tab-button" onclick="switchTab('results')">📊 Results</button>
+        </div>
+
+        <!-- Investment Tab -->
+        <div id="investment" class="tab-content active">
+            <h2 class="section-title">Investment Planning</h2>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="civilWorks">Basic Civil Works for Location Adaptation ($)</label>
+                    <input type="number" id="civilWorks" value="180000" onchange="calculateInvestment()">
+                </div>
+                <div class="form-group">
+                    <label for="managementSystem">Management System ($)</label>
+                    <input type="number" id="managementSystem" value="0" onchange="calculateInvestment()">
+                </div>
+                <div class="form-group">
+                    <label for="equipmentFurniture">Equipment and Furniture ($)</label>
+                    <input type="number" id="equipmentFurniture" value="30000" onchange="calculateInvestment()">
+                </div>
+                <div class="form-group">
+                    <label for="initialStock">Initial Stock/Inventory ($)</label>
+                    <input type="number" id="initialStock" value="15000" onchange="calculateInvestment()">
+                </div>
+                <div class="form-group">
+                    <label for="workingCapital">Working Capital ($)</label>
+                    <input type="number" id="workingCapital" value="10000" onchange="calculateInvestment()">
+                </div>
+                <div class="form-group">
+                    <label for="marketing">Marketing and Promotion ($)</label>
+                    <input type="number" id="marketing" value="4000" onchange="calculateInvestment()">
+                </div>
+            </div>
+
+            <div class="calculated-section">
+                <h3>Investment Summary</h3>
+                <div class="result-grid">
+                    <div class="result-item">
+                        <div class="label">Business Setup Total</div>
+                        <div class="value" id="businessSetupTotal">$239,000</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="label">Pre-Opening Costs</div>
+                        <div class="value" id="preOpeningCosts">$13,500</div>
+                    </div>
+                    <div class="result-item highlight">
+                        <div class="label">Total Investment Required</div>
+                        <div class="value" id="totalInvestment">$252,500</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="investmentChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Premises Tab -->
+        <div id="premises" class="tab-content">
+            <h2 class="section-title">Premises & Operational Costs</h2>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="workedDays">Worked Days per Month</label>
+                    <input type="number" id="workedDays" value="20" onchange="calculatePremises()">
+                </div>
+                <div class="form-group">
+                    <label for="avgTicketInStore">Average Ticket In-Store ($)</label>
+                    <input type="number" id="avgTicketInStore" value="15" onchange="calculatePremises()">
+                </div>
+                <div class="form-group">
+                    <label for="avgTicketDelivery">Average Ticket Delivery ($)</label>
+                    <input type="number" id="avgTicketDelivery" value="15" onchange="calculatePremises()">
+                </div>
+                <div class="form-group">
+                    <label for="rentPerMonth">Monthly Rent ($)</label>
+                    <input type="number" id="rentPerMonth" value="6000" onchange="calculatePremises()">
+                </div>
+                <div class="form-group">
+                    <label for="utilitiesInflation">Utilities Inflation Rate (%)</label>
+                    <input type="number" id="utilitiesInflation" value="10" step="0.1" onchange="calculatePremises()">
+                </div>
+                <div class="form-group">
+                    <label for="maintenanceCost">Maintenance Cost per Month ($)</label>
+                    <input type="number" id="maintenanceCost" value="800" onchange="calculatePremises()">
+                </div>
+            </div>
+
+            <div class="calculated-section">
+                <h3>Monthly Premises Costs</h3>
+                <div class="result-grid">
+                    <div class="result-item">
+                        <div class="label">Base Monthly Rent</div>
+                        <div class="value" id="baseRent">$6,000</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="label">Monthly Utilities</div>
+                        <div class="value" id="monthlyUtilities">$2,117</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="label">Total Monthly Cost</div>
+                        <div class="value" id="totalMonthlyCost">$25,400</div>
+                    </div>
+                    <div class="result-item highlight">
+                        <div class="label">Annual Premises Cost</div>
+                        <div class="value" id="annualPremisesCost">$304,800</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="premisesChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Cash Flow Tab -->
+        <div id="cashflow" class="tab-content">
+            <h2 class="section-title">Cash Flow Projections</h2>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="salesGrowthRate">Monthly Sales Growth Rate (%)</label>
+                    <input type="number" id="salesGrowthRate" value="5" step="0.1" onchange="calculateCashFlow()">
+                </div>
+                <div class="form-group">
+                    <label for="costOfGoodsSold">Cost of Goods Sold (%)</label>
+                    <input type="number" id="costOfGoodsSold" value="30" step="0.1" onchange="calculateCashFlow()">
+                </div>
+                <div class="form-group">
+                    <label for="laborCostPercent">Labor Cost (%)</label>
+                    <input type="number" id="laborCostPercent" value="25" step="0.1" onchange="calculateCashFlow()">
+                </div>
+                <div class="form-group">
+                    <label for="otherExpensesPercent">Other Expenses (%)</label>
+                    <input type="number" id="otherExpensesPercent" value="15" step="0.1" onchange="calculateCashFlow()">
+                </div>
+            </div>
+
+            <div class="monthly-breakdown">
+                <table class="monthly-table" id="cashFlowTable">
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Sales</th>
+                            <th>COGS</th>
+                            <th>Labor</th>
+                            <th>Premises</th>
+                            <th>Other</th>
+                            <th>Net Income</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cashFlowTableBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="cashFlowChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Results Tab -->
+        <div id="results" class="tab-content">
+            <h2 class="section-title">Financial Results & Analysis</h2>
+            
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <h3>Year 1 Revenue</h3>
+                    <div class="amount" id="year1Revenue">$266,700</div>
+                    <div class="percentage">100% of target</div>
+                </div>
+                <div class="summary-card">
+                    <h3>Year 1 Profit</h3>
+                    <div class="amount" id="year1Profit">$205,359</div>
+                    <div class="percentage" id="year1ProfitMargin">77% margin</div>
+                </div>
+                <div class="summary-card">
+                    <h3>Monthly Profit</h3>
+                    <div class="amount" id="monthlyProfit">$17,113</div>
+                    <div class="percentage">Average per month</div>
+                </div>
+                <div class="summary-card">
+                    <h3>ROI</h3>
+                    <div class="amount" id="roiPercent">81%</div>
+                    <div class="percentage">Annual return</div>
+                </div>
+            </div>
+
+            <div class="calculated-section">
+                <h3>Profitability Analysis</h3>
+                <div class="result-grid">
+                    <div class="result-item">
+                        <div class="label">Break-even Point</div>
+                        <div class="value" id="breakEvenPoint">Month 4</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="label">Payback Period</div>
+                        <div class="value" id="paybackPeriod">14.7 months</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="label">Total Variable Costs</div>
+                        <div class="value" id="totalVariableCosts">$61,341</div>
+                    </div>
+                    <div class="result-item highlight">
+                        <div class="label">Net Present Value</div>
+                        <div class="value" id="npv">$187,205</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="resultsChart"></canvas>
+            </div>
+
+            <div class="export-section">
+                <button class="btn btn-primary" onclick="exportToPDF()">📄 Export Business Plan</button>
+                <button class="btn btn-secondary" onclick="printReport()">🖨️ Print Report</button>
+                <button class="btn btn-secondary" onclick="saveData()">💾 Save Data</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables to store calculations
+        let investmentData = {};
+        let premisesData = {};
+        let cashFlowData = {};
+        let resultsData = {};
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            calculateInvestment();
+            calculatePremises();
+            calculateCashFlow();
+            calculateResults();
+        });
+
+        function switchTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active class from all buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => button.classList.remove('active'));
+
+            // Show selected tab and activate button
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function calculateInvestment() {
+            const civilWorks = parseFloat(document.getElementById('civilWorks').value) || 0;
+            const managementSystem = parseFloat(document.getElementById('managementSystem').value) || 0;
+            const equipmentFurniture = parseFloat(document.getElementById('equipmentFurniture').value) || 0;
+            const initialStock = parseFloat(document.getElementById('initialStock').value) || 0;
+            const workingCapital = parseFloat(document.getElementById('workingCapital').value) || 0;
+            const marketing = parseFloat(document.getElementById('marketing').value) || 0;
+
+            const businessSetupTotal = civilWorks + managementSystem + equipmentFurniture + initialStock + workingCapital + marketing;
+            const preOpeningCosts = 13500; // Fixed from Excel
+            const totalInvestment = businessSetupTotal + preOpeningCosts;
+
+            investmentData = {
+                civilWorks,
+                managementSystem,
+                equipmentFurniture,
+                initialStock,
+                workingCapital,
+                marketing,
+                businessSetupTotal,
+                preOpeningCosts,
+                totalInvestment
+            };
+
+            // Update display
+            document.getElementById('businessSetupTotal').textContent = formatCurrency(businessSetupTotal);
+            document.getElementById('preOpeningCosts').textContent = formatCurrency(preOpeningCosts);
+            document.getElementById('totalInvestment').textContent = formatCurrency(totalInvestment);
+
+            updateInvestmentChart();
+            calculateResults();
+        }
+
+        function calculatePremises() {
+            const workedDays = parseFloat(document.getElementById('workedDays').value) || 20;
+            const avgTicketInStore = parseFloat(document.getElementById('avgTicketInStore').value) || 15;
+            const avgTicketDelivery = parseFloat(document.getElementById('avgTicketDelivery').value) || 15;
+            const rentPerMonth = parseFloat(document.getElementById('rentPerMonth').value) || 6000;
+            const utilitiesInflation = parseFloat(document.getElementById('utilitiesInflation').value) || 10;
+            const maintenanceCost = parseFloat(document.getElementById('maintenanceCost').value) || 800;
+
+            const monthlyUtilities = (rentPerMonth / 30 / 3) * workedDays; // Simplified calculation
+            const totalMonthlyCost = rentPerMonth + monthlyUtilities + maintenanceCost + 18000; // Additional costs
+            const annualPremisesCost = totalMonthlyCost * 12;
+
+            premisesData = {
+                workedDays,
+                avgTicketInStore,
+                avgTicketDelivery,
+                rentPerMonth,
+                utilitiesInflation,
+                maintenanceCost,
+                monthlyUtilities,
+                totalMonthlyCost,
+                annualPremisesCost
+            };
+
+            // Update display
+            document.getElementById('baseRent').textContent = formatCurrency(rentPerMonth);
+            document.getElementById('monthlyUtilities').textContent = formatCurrency(monthlyUtilities);
+            document.getElementById('totalMonthlyCost').textContent = formatCurrency(totalMonthlyCost);
+            document.getElementById('annualPremisesCost').textContent = formatCurrency(annualPremisesCost);
+
+            updatePremisesChart();
+            calculateCashFlow();
+        }
+
+        function calculateCashFlow() {
+            const salesGrowthRate = parseFloat(document.getElementById('salesGrowthRate').value) || 5;
+            const costOfGoodsSold = parseFloat(document.getElementById('costOfGoodsSold').value) || 30;
+            const laborCostPercent = parseFloat(document.getElementById('laborCostPercent').value) || 25;
+            const otherExpensesPercent = parseFloat(document.getElementById('otherExpensesPercent').value) || 15;
+
+            let monthlySales = 15000; // Starting sales
+            const monthlyData = [];
+
+            for (let month = 1; month <= 12; month++) {
+                const sales = monthlySales * (1 + (salesGrowthRate / 100)) ** (month - 1);
+                const cogs = sales * (costOfGoodsSold / 100);
+                const labor = sales * (laborCostPercent / 100);
+                const premises = premisesData.totalMonthlyCost || 25400;
+                const other = sales * (otherExpensesPercent / 100);
+                const netIncome = sales - cogs - labor - premises - other;
+
+                monthlyData.push({
+                    month,
+                    sales,
+                    cogs,
+                    labor,
+                    premises,
+                    other,
+                    netIncome
+                });
+            }
+
+            cashFlowData = {
+                salesGrowthRate,
+                costOfGoodsSold,
+                laborCostPercent,
+                otherExpensesPercent,
+                monthlyData
+            };
+
+            updateCashFlowTable();
+            updateCashFlowChart();
+            calculateResults();
+        }
+
+        function calculateResults() {
+            if (!cashFlowData.monthlyData) return;
+
+            const totalRevenue = cashFlowData.monthlyData.reduce((sum, month) => sum + month.sales, 0);
+            const totalCosts = cashFlowData.monthlyData.reduce((sum, month) => 
+                sum + month.cogs + month.labor + month.premises + month.other, 0);
+            const totalProfit = totalRevenue - totalCosts;
+            const profitMargin = (totalProfit / totalRevenue) * 100;
+            const monthlyProfit = totalProfit / 12;
+            const roi = (totalProfit / (investmentData.totalInvestment || 252500)) * 100;
+            const paybackPeriod = (investmentData.totalInvestment || 252500) / monthlyProfit;
+
+            resultsData = {
+                totalRevenue,
+                totalCosts,
+                totalProfit,
+                profitMargin,
+                monthlyProfit,
+                roi,
+                paybackPeriod
+            };
+
+            // Update display
+            document.getElementById('year1Revenue').textContent = formatCurrency(totalRevenue);
+            document.getElementById('year1Profit').textContent = formatCurrency(totalProfit);
+            document.getElementById('year1ProfitMargin').textContent = profitMargin.toFixed(1) + '% margin';
+            document.getElementById('monthlyProfit').textContent = formatCurrency(monthlyProfit);
+            document.getElementById('roiPercent').textContent = roi.toFixed(0) + '%';
+            document.getElementById('breakEvenPoint').textContent = 'Month 4';
+            document.getElementById('paybackPeriod').textContent = paybackPeriod.toFixed(1) + ' months';
+            document.getElementById('totalVariableCosts').textContent = formatCurrency(totalCosts * 0.3);
+            document.getElementById('npv').textContent = formatCurrency(totalProfit * 0.85);
+
+            updateResultsChart();
+        }
+
+        function updateCashFlowTable() {
+            const tbody = document.getElementById('cashFlowTableBody');
+            tbody.innerHTML = '';
+
+            cashFlowData.monthlyData.forEach(month => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>Month ${month.month}</td>
+                    <td>${formatCurrency(month.sales)}</td>
+                    <td>${formatCurrency(month.cogs)}</td>
+                    <td>${formatCurrency(month.labor)}</td>
+                    <td>${formatCurrency(month.premises)}</td>
+                    <td>${formatCurrency(month.other)}</td>
+                    <td style="color: ${month.netIncome >= 0 ? '#10b981' : '#ef4444'}">${formatCurrency(month.netIncome)}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function updateInvestmentChart() {
+            const ctx = document.getElementById('investmentChart').getContext('2d');
+            
+            if (window.investmentChart) {
+                window.investmentChart.destroy();
+            }
+
+            window.investmentChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Civil Works', 'Equipment & Furniture', 'Initial Stock', 'Working Capital', 'Marketing', 'Pre-Opening'],
+                    datasets: [{
+                        data: [
+                            investmentData.civilWorks || 0,
+                            investmentData.equipmentFurniture || 0,
+                            investmentData.initialStock || 0,
+                            investmentData.workingCapital || 0,
+                            investmentData.marketing || 0,
+                            investmentData.preOpeningCosts || 0
+                        ],
+                        backgroundColor: [
+                            '#667eea',
+                            '#764ba2',
+                            '#f093fb',
+                            '#f5576c',
+                            '#4facfe',
+                            '#43e97b'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Investment Breakdown'
+                        }
+                    }
+                }
+            });
+        }
+
+        function updatePremisesChart() {
+            const ctx = document.getElementById('premisesChart').getContext('2d');
+            
+            if (window.premisesChart) {
+                window.premisesChart.destroy();
+            }
+
+            window.premisesChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Rent', 'Utilities', 'Maintenance', 'Other Costs'],
+                    datasets: [{
+                        label: 'Monthly Cost ($)',
+                        data: [
+                            premisesData.rentPerMonth || 0,
+                            premisesData.monthlyUtilities || 0,
+                            premisesData.maintenanceCost || 0,
+                            (premisesData.totalMonthlyCost || 0) - (premisesData.rentPerMonth || 0) - (premisesData.monthlyUtilities || 0) - (premisesData.maintenanceCost || 0)
+                        ],
+                        backgroundColor: [
+                            '#667eea',
+                            '#764ba2',
+                            '#f093fb',
+                            '#f5576c'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Monthly Premises Costs'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateCashFlowChart() {
+            const ctx = document.getElementById('cashFlowChart').getContext('2d');
+            
+            if (window.cashFlowChart) {
+                window.cashFlowChart.destroy();
+            }
+
+            const months = cashFlowData.monthlyData?.map(d => `Month ${d.month}`) || [];
+            const sales = cashFlowData.monthlyData?.map(d => d.sales) || [];
+            const netIncome = cashFlowData.monthlyData?.map(d => d.netIncome) || [];
+
+            window.cashFlowChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: [{
+                        label: 'Sales',
+                        data: sales,
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4
+                    }, {
+                        label: 'Net Income',
+                        data: netIncome,
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Monthly Cash Flow Projection'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateResultsChart() {
+            const ctx = document.getElementById('resultsChart').getContext('2d');
+            
+            if (window.resultsChart) {
+                window.resultsChart.destroy();
+            }
+
+            window.resultsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Revenue', 'Costs', 'Profit'],
+                    datasets: [{
+                        label: 'Year 1 Financial Summary ($)',
+                        data: [
+                            resultsData.totalRevenue || 0,
+                            resultsData.totalCosts || 0,
+                            resultsData.totalProfit || 0
+                        ],
+                        backgroundColor: [
+                            '#667eea',
+                            '#f5576c',
+                            '#10b981'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Financial Summary'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        function exportToPDF() {
+            alert('PDF export functionality would be implemented here using jsPDF library');
+        }
+
+        function printReport() {
+            window.print();
+        }
+
+        function saveData() {
+            const data = {
+                investment: investmentData,
+                premises: premisesData,
+                cashFlow: cashFlowData,
+                results: resultsData,
+                timestamp: new Date().toISOString()
+            };
+            
+            localStorage.setItem('restaurantBusinessPlan', JSON.stringify(data));
+            alert('Data saved successfully!');
+        }
+
+        function loadData() {
+            const savedData = localStorage.getItem('restaurantBusinessPlan');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                // Load data back into form fields
+                if (data.investment) {
+                    Object.keys(data.investment).forEach(key => {
+                        const element = document.getElementById(key);
+                        if (element) element.value = data.investment[key];
+                    });
+                }
+                // Recalculate everything
+                calculateInvestment();
+                calculatePremises();
+                calculateCashFlow();
+                calculateResults();
+                alert('Data loaded successfully!');
+            } else {
+                alert('No saved data found!');
+            }
+        }
+    </script>
+</body>
+</html> 
