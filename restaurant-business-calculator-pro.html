@@ -212,6 +212,28 @@
             transform: translateY(-1px);
         }
 
+        .tab-text {
+            display: inline;
+        }
+
+        /* Mobile Navigation Hint */
+        .mobile-nav-hint {
+            display: none;
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(0, 122, 255, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 122, 255, 0.2);
+        }
+
+        .mobile-nav-hint p {
+            margin: 0;
+            font-size: 13px;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
         /* Tab Content */
         .tab-content {
             display: none;
@@ -577,43 +599,284 @@
             font-weight: 500;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
+        /* Mobile-First Responsive Design */
+        @media (max-width: 480px) {
             .app-container {
-                padding: 15px;
+                padding: 10px;
             }
 
             .header {
-                padding: 25px;
+                padding: 20px;
+                margin-bottom: 20px;
+                border-radius: 16px;
             }
 
             .header-content {
                 flex-direction: column;
                 text-align: center;
+                gap: 15px;
             }
 
             .header-text h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
+                line-height: 1.2;
+            }
+
+            .header-text p {
+                font-size: 1rem;
+            }
+
+            .header-actions {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .btn {
+                padding: 10px 16px;
+                font-size: 13px;
+                min-width: 120px;
             }
 
             .nav-tabs {
                 grid-template-columns: 1fr;
+                gap: 8px;
+                padding: 10px;
+                border-radius: 16px;
+            }
+
+            .nav-tab {
+                padding: 16px 20px;
+                border-radius: 12px;
+                font-size: 14px;
+                text-align: center;
+            }
+
+            .nav-tab i {
+                font-size: 16px;
+            }
+
+            .tab-text {
+                display: block;
+                margin-top: 4px;
+                font-size: 11px;
+            }
+
+            .mobile-nav-hint {
+                display: block;
             }
 
             .tab-content {
-                padding: 25px;
+                padding: 20px;
+                border-radius: 16px;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+                text-align: center;
+                margin-bottom: 25px;
+            }
+
+            .form-section-title {
+                font-size: 1.1rem;
+                text-align: center;
+                margin-bottom: 15px;
             }
 
             .form-grid {
                 grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .form-group input,
+            .form-group select {
+                padding: 16px;
+                font-size: 16px;
+                border-radius: 10px;
+                -webkit-appearance: none;
+                appearance: none;
+            }
+
+            .form-group label {
+                font-size: 13px;
+                margin-bottom: 6px;
             }
 
             .results-grid {
                 grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .result-card {
+                padding: 20px;
+                border-radius: 16px;
+            }
+
+            .result-card-value {
+                font-size: 2rem;
             }
 
             .summary-cards {
                 grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .summary-card {
+                padding: 25px 20px;
+                border-radius: 16px;
+            }
+
+            .summary-card-value {
+                font-size: 2.2rem;
+            }
+
+            .chart-container {
+                padding: 20px;
+                border-radius: 16px;
+                margin: 20px 0;
+            }
+
+            .chart-canvas {
+                height: 300px;
+            }
+
+            .data-table-container {
+                border-radius: 16px;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 12px 15px;
+                font-size: 14px;
+                white-space: nowrap;
+            }
+
+            .data-table th {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 768px) and (min-width: 481px) {
+            .app-container {
+                padding: 15px;
+            }
+
+            .header {
+                padding: 30px;
+                border-radius: 20px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+
+            .header-text h1 {
+                font-size: 2.2rem;
+            }
+
+            .nav-tabs {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .nav-tab {
+                padding: 18px 20px;
+                font-size: 14px;
+            }
+
+            .tab-content {
+                padding: 30px;
+            }
+
+            .form-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .results-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .summary-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .chart-canvas {
+                height: 350px;
+            }
+        }
+
+        /* Touch-friendly improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .btn,
+            .nav-tab,
+            .result-card {
+                transform: none !important;
+            }
+
+            .btn:active,
+            .nav-tab:active {
+                transform: scale(0.95);
+                transition: transform 0.1s ease;
+            }
+
+            .result-card:active {
+                transform: scale(0.98);
+                transition: transform 0.1s ease;
+            }
+
+            /* Larger touch targets */
+            .form-group input,
+            .form-group select {
+                min-height: 48px;
+            }
+
+            .btn {
+                min-height: 44px;
+                min-width: 44px;
+            }
+
+            .nav-tab {
+                min-height: 48px;
+            }
+        }
+
+        /* Landscape phone optimization */
+        @media (max-width: 896px) and (orientation: landscape) {
+            .header {
+                padding: 20px;
+                margin-bottom: 15px;
+            }
+
+            .header-text h1 {
+                font-size: 1.8rem;
+            }
+
+            .nav-tabs {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+                padding: 8px;
+            }
+
+            .nav-tab {
+                padding: 12px 8px;
+                font-size: 12px;
+            }
+
+            .nav-tab i {
+                font-size: 14px;
+            }
+
+            .tab-content {
+                padding: 20px;
+            }
+
+            .chart-canvas {
+                height: 250px;
             }
         }
 
@@ -706,21 +969,26 @@
         <nav class="nav-tabs">
             <button class="nav-tab active" onclick="switchTab('investment')">
                 <i class="fas fa-coins"></i>
-                Investment Planning
+                <span class="tab-text">Investment Planning</span>
             </button>
             <button class="nav-tab" onclick="switchTab('premises')">
                 <i class="fas fa-building"></i>
-                Premises & Operations
+                <span class="tab-text">Premises & Operations</span>
             </button>
             <button class="nav-tab" onclick="switchTab('cashflow')">
                 <i class="fas fa-chart-line"></i>
-                Cash Flow Analysis
+                <span class="tab-text">Cash Flow Analysis</span>
             </button>
             <button class="nav-tab" onclick="switchTab('results')">
                 <i class="fas fa-analytics"></i>
-                Financial Results
+                <span class="tab-text">Financial Results</span>
             </button>
         </nav>
+
+        <!-- Mobile Navigation Hint -->
+        <div class="mobile-nav-hint">
+            <p>💡 Swipe left or right to navigate between tabs</p>
+        </div>
 
         <!-- Investment Tab -->
         <div id="investment" class="tab-content active">
@@ -1246,7 +1514,76 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadSampleData();
             calculateAll();
+            initializeMobileOptimizations();
         });
+
+        // Mobile optimizations
+        function initializeMobileOptimizations() {
+            // Prevent zoom on input focus for iOS
+            if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+                const viewport = document.querySelector('meta[name=viewport]');
+                if (viewport) {
+                    viewport.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+                }
+            }
+
+            // Add touch feedback for interactive elements
+            const interactiveElements = document.querySelectorAll('.btn, .nav-tab, .result-card');
+            interactiveElements.forEach(element => {
+                element.addEventListener('touchstart', function() {
+                    this.style.opacity = '0.8';
+                }, { passive: true });
+                
+                element.addEventListener('touchend', function() {
+                    setTimeout(() => {
+                        this.style.opacity = '';
+                    }, 150);
+                }, { passive: true });
+            });
+
+            // Optimize chart interactions for touch
+            const chartContainers = document.querySelectorAll('.chart-canvas');
+            chartContainers.forEach(container => {
+                container.style.touchAction = 'pan-x pan-y';
+            });
+
+            // Add swipe gesture for tab navigation
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            document.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            document.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, { passive: true });
+
+            function handleSwipe() {
+                const swipeThreshold = 100;
+                const swipeDistance = touchEndX - touchStartX;
+                
+                if (Math.abs(swipeDistance) > swipeThreshold) {
+                    const currentTab = document.querySelector('.nav-tab.active');
+                    const tabs = Array.from(document.querySelectorAll('.nav-tab'));
+                    const currentIndex = tabs.indexOf(currentTab);
+                    
+                    let newIndex;
+                    if (swipeDistance > 0 && currentIndex > 0) {
+                        // Swipe right - previous tab
+                        newIndex = currentIndex - 1;
+                    } else if (swipeDistance < 0 && currentIndex < tabs.length - 1) {
+                        // Swipe left - next tab
+                        newIndex = currentIndex + 1;
+                    }
+                    
+                    if (newIndex !== undefined) {
+                        tabs[newIndex].click();
+                    }
+                }
+            }
+        }
 
         // Tab switching
         function switchTab(tabName) {
