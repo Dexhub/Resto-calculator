@@ -83,12 +83,13 @@ Comprehensive financial analytics with ROI, break-even analysis, and performance
 
 ## 🎨 **Design Features**
 
-- ✨ **Modern Glassmorphism UI** with backdrop blur effects
-- 📱 **Fully Responsive Design** optimized for all devices
-- 🎯 **Professional Color Scheme** with CSS custom properties
+- ✨ **Modern Apple-Style UI** with glassmorphism effects and Apple color palette
+- 📱 **Mobile-First Responsive Design** optimized for all devices
+- 👆 **Touch-Optimized Interactions** with swipe gestures and haptic feedback
+- 🎯 **Professional Apple Color Scheme** (#007AFF, #34C759, #FF9500)
 - 🔄 **Smooth Animations** and micro-interactions
-- 📊 **Interactive Charts** with hover states and tooltips
-- 🎪 **Accessibility Features** with ARIA labels and keyboard navigation
+- 📊 **Interactive Charts** with touch-friendly controls
+- ♿ **Accessibility Features** with proper touch targets and ARIA labels
 
 ## 📊 **Excel Integration**
 
@@ -109,6 +110,13 @@ All Excel formulas have been accurately translated to JavaScript for real-time c
 - 🔄 **Import/Load**: Restore previous calculations
 - 🖨️ **Print Support**: Generate hard copies of your analysis
 
+### **Mobile Features**
+- 👆 **Swipe Navigation**: Swipe left/right to navigate between tabs
+- 📱 **Touch Optimized**: Large touch targets and smooth interactions
+- 🔄 **Auto-rotation**: Supports both portrait and landscape modes
+- ⚡ **Fast Performance**: Optimized for mobile processors
+- 🎯 **Precise Touch**: No accidental taps with proper spacing
+
 ### **Sample Data**
 Click "Load Sample" to explore the calculator with realistic restaurant data.
 
@@ -124,13 +132,19 @@ Click "Load Sample" to explore the calculator with realistic restaurant data.
 ### **Validation**
 All calculations have been verified against the original Excel model to ensure accuracy.
 
-## 🌐 **Browser Compatibility**
+## 🌐 **Device & Browser Compatibility**
 
+### **Desktop Browsers**
 - ✅ **Chrome** 90+ (Recommended)
 - ✅ **Firefox** 88+
 - ✅ **Safari** 14+
 - ✅ **Edge** 90+
-- ✅ **Mobile Browsers** (iOS Safari, Chrome Mobile)
+
+### **Mobile Devices**
+- 📱 **iOS Safari** (iPhone/iPad) - Fully optimized
+- 🤖 **Chrome Mobile** (Android) - Touch gestures enabled
+- 📲 **Samsung Internet** - Responsive design
+- 🍎 **Apple Touch** - Swipe navigation supported
 
 ## 🚀 **Deployment**
 
