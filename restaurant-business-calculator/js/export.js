@@ -59,6 +59,9 @@ function exportToPDF() {
         ['Year 2 Projected Revenue', formatCurrency(AppState.data.results.year2.sales)],
         ['Expected ROI', AppState.data.results.roi.toFixed(1) + '%'],
         ['Break-even Period', AppState.data.results.breakEvenMonths + ' months'],
+        ['Monthly Break-even Sales', formatCurrency(AppState.data.results.breakEvenSales)],
+        ['Break-even Tickets', AppState.data.results.breakEvenTickets.toLocaleString()],
+        ['Average Cost per Ticket', formatCurrency(AppState.data.results.avgCostPerTicket)],
         ['Report Generated', new Date().toLocaleDateString()]
     ];
     
@@ -114,8 +117,12 @@ function exportToPDF() {
         ['Average Ticket - Delivery', formatCurrency(premises.averageTicket.delivery)],
         ['Sales Mix - In Store', (premises.ticketRatio.inStore * 100) + '%'],
         ['Sales Mix - Delivery', (premises.ticketRatio.delivery * 100) + '%'],
+        ['Cost of Goods', (premises.cogsPercent * 100) + '%'],
+        ['Delivery Commission', (premises.deliveryCommission * 100) + '%'],
         ['Monthly Ticket Projection', premises.monthlyTickets.toLocaleString()],
-        ['Daily Ticket Average', premises.dailyTickets.toLocaleString()]
+        ['Daily Ticket Average', premises.dailyTickets.toLocaleString()],
+        ['Average Cost per Ticket', formatCurrency(AppState.data.results.avgCostPerTicket)],
+        ['Break-even Tickets', AppState.data.results.breakEvenTickets.toLocaleString()]
     ];
     
     operationalData.forEach(([label, value]) => {

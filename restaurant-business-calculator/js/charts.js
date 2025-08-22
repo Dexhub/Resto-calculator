@@ -84,7 +84,7 @@ function updatePremisesChart() {
     
     // Calculate data for visualization
     const inStoreRevenue = premises.monthlyTickets * premises.ticketRatio.inStore * premises.averageTicket.inStore;
-    const deliveryRevenue = premises.monthlyTickets * premises.ticketRatio.delivery * premises.averageTicket.delivery;
+    const deliveryRevenue = premises.monthlyTickets * premises.ticketRatio.delivery * premises.averageTicket.delivery * (1 - premises.deliveryCommission);
     
     chartInstances.premises = new Chart(ctx, {
         type: 'bar',
@@ -406,7 +406,11 @@ function updateBreakEvenChart() {
     const totalCosts = [];
     const revenues = [];
     const monthlyRevenue = AppState.data.results.year1.sales / 12;
-    const variableCostRatio = 0.65; // 65% variable costs
+    const premises = AppState.data.premises;
+    const avgTicketGross = (premises.averageTicket.inStore * premises.ticketRatio.inStore) +
+                           (premises.averageTicket.delivery * premises.ticketRatio.delivery);
+    const commissionRatio = (premises.averageTicket.delivery * premises.deliveryCommission * premises.ticketRatio.delivery) / avgTicketGross;
+    const variableCostRatio = premises.cogsPercent + commissionRatio;
     
     for (let i = 0; i < 24; i++) {
         const revenue = monthlyRevenue * (i + 1);

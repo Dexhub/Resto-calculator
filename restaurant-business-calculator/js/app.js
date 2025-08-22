@@ -28,6 +28,8 @@ const AppState = {
                 inStore: 0.5,
                 delivery: 0.5
             },
+            cogsPercent: 0.35,
+            deliveryCommission: 0,
             itemsPerTicket: 6,
             monthlyTickets: 1333,
             dailyTickets: 67
@@ -41,7 +43,9 @@ const AppState = {
             year2: { sales: 0, costs: 0, profit: 0, margin: 0 },
             roi: 0,
             breakEvenMonths: 0,
-            breakEvenSales: 0
+            breakEvenSales: 0,
+            breakEvenTickets: 0,
+            avgCostPerTicket: 0
         }
     },
     isCalculating: false,
@@ -221,6 +225,19 @@ function setupPremisesListeners() {
         updatePremisesCalculations();
         markUnsavedChanges();
     });
+
+    // Cost percentages
+    document.getElementById('cogs-percent').addEventListener('input', (e) => {
+        AppState.data.premises.cogsPercent = (parseFloat(e.target.value) || 0) / 100;
+        updatePremisesCalculations();
+        markUnsavedChanges();
+    });
+
+    document.getElementById('delivery-commission').addEventListener('input', (e) => {
+        AppState.data.premises.deliveryCommission = (parseFloat(e.target.value) || 0) / 100;
+        updatePremisesCalculations();
+        markUnsavedChanges();
+    });
     
     // Sales Ratio
     const ratioInstore = document.getElementById('ratio-instore');
@@ -282,28 +299,29 @@ function updateInvestmentSummary() {
 // Update Premises Calculations
 function updatePremisesCalculations() {
     const premises = AppState.data.premises;
-    
-    // Calculate monthly tickets based on initial assumptions
-    // This is a simplified calculation - in reality, you'd want more complex modeling
-    const avgTicketPrice = (premises.averageTicket.inStore * premises.ticketRatio.inStore) +
+
+    // Calculate average ticket values
+    const avgTicketGross = (premises.averageTicket.inStore * premises.ticketRatio.inStore) +
                           (premises.averageTicket.delivery * premises.ticketRatio.delivery);
-    
-    // Assuming target monthly revenue and calculating tickets needed
+    const commissionPerTicket = premises.averageTicket.delivery * premises.deliveryCommission * premises.ticketRatio.delivery;
+    const avgTicketNet = avgTicketGross - commissionPerTicket;
+
+    // Assuming target monthly revenue (net) and calculating tickets needed
     const targetMonthlyRevenue = 20000; // Base assumption
-    premises.monthlyTickets = Math.round(targetMonthlyRevenue / avgTicketPrice);
+    premises.monthlyTickets = Math.round(targetMonthlyRevenue / avgTicketNet);
     premises.dailyTickets = Math.round(premises.monthlyTickets / premises.workingDays);
-    
+
     // Update UI
-    document.getElementById('monthly-tickets').textContent = 
+    document.getElementById('monthly-tickets').textContent =
         premises.monthlyTickets.toLocaleString();
-    document.getElementById('daily-tickets').textContent = 
+    document.getElementById('daily-tickets').textContent =
         premises.dailyTickets.toLocaleString();
-    document.getElementById('monthly-revenue').textContent = 
-        formatCurrency(premises.monthlyTickets * avgTicketPrice);
-    
+    document.getElementById('monthly-revenue').textContent =
+        formatCurrency(premises.monthlyTickets * avgTicketNet);
+
     // Update chart
     updatePremisesChart();
-    
+
     // Trigger cash flow recalculation
     generateCashFlow();
 }
@@ -371,6 +389,8 @@ function initializeDefaultValues() {
     document.getElementById('avg-items').value = 6;
     document.getElementById('ticket-instore').value = 15;
     document.getElementById('ticket-delivery').value = 15;
+    document.getElementById('cogs-percent').value = 35;
+    document.getElementById('delivery-commission').value = 0;
     
     // Update state
     updateInvestmentItem('civilWorks', 'quantity', 1);
@@ -605,6 +625,8 @@ function updateUIFromState() {
     document.getElementById('avg-items').value = prem.itemsPerTicket;
     document.getElementById('ticket-instore').value = prem.averageTicket.inStore;
     document.getElementById('ticket-delivery').value = prem.averageTicket.delivery;
+    document.getElementById('cogs-percent').value = (prem.cogsPercent || 0) * 100;
+    document.getElementById('delivery-commission').value = (prem.deliveryCommission || 0) * 100;
     document.getElementById('ratio-instore').value = prem.ticketRatio.inStore * 100;
     document.getElementById('ratio-instore-value').textContent = (prem.ticketRatio.inStore * 100) + '%';
     document.getElementById('ratio-delivery-value').textContent = (prem.ticketRatio.delivery * 100) + '%';
@@ -632,6 +654,8 @@ function loadTemplate(templateName) {
                 workingDays: 26,
                 averageTicket: { inStore: 12, delivery: 15 },
                 ticketRatio: { inStore: 0.7, delivery: 0.3 },
+                cogsPercent: 0.35,
+                deliveryCommission: 0,
                 itemsPerTicket: 4,
                 monthlyTickets: 1667,
                 dailyTickets: 64
@@ -655,6 +679,8 @@ function loadTemplate(templateName) {
                 workingDays: 24,
                 averageTicket: { inStore: 25, delivery: 30 },
                 ticketRatio: { inStore: 0.85, delivery: 0.15 },
+                cogsPercent: 0.35,
+                deliveryCommission: 0,
                 itemsPerTicket: 6,
                 monthlyTickets: 800,
                 dailyTickets: 33
@@ -678,6 +704,8 @@ function loadTemplate(templateName) {
                 workingDays: 22,
                 averageTicket: { inStore: 75, delivery: 85 },
                 ticketRatio: { inStore: 0.95, delivery: 0.05 },
+                cogsPercent: 0.35,
+                deliveryCommission: 0,
                 itemsPerTicket: 8,
                 monthlyTickets: 267,
                 dailyTickets: 12
@@ -701,6 +729,8 @@ function loadTemplate(templateName) {
                 workingDays: 20,
                 averageTicket: { inStore: 10, delivery: 0 },
                 ticketRatio: { inStore: 1.0, delivery: 0 },
+                cogsPercent: 0.35,
+                deliveryCommission: 0,
                 itemsPerTicket: 3,
                 monthlyTickets: 2000,
                 dailyTickets: 100
@@ -724,6 +754,8 @@ function loadTemplate(templateName) {
                 workingDays: 28,
                 averageTicket: { inStore: 8, delivery: 10 },
                 ticketRatio: { inStore: 0.8, delivery: 0.2 },
+                cogsPercent: 0.35,
+                deliveryCommission: 0,
                 itemsPerTicket: 2.5,
                 monthlyTickets: 2500,
                 dailyTickets: 89
