@@ -59,6 +59,21 @@ const UIController = {
             if (value > 100) this.value = 100;
             if (value < 0) this.value = 0;
         });
+
+        // Percentage validation for costs
+        const cogsPercent = document.getElementById('cogs-percent');
+        cogsPercent.addEventListener('input', function() {
+            const value = parseFloat(this.value);
+            if (value > 100) this.value = 100;
+            if (value < 0) this.value = 0;
+        });
+
+        const deliveryCommission = document.getElementById('delivery-commission');
+        deliveryCommission.addEventListener('input', function() {
+            const value = parseFloat(this.value);
+            if (value > 100) this.value = 100;
+            if (value < 0) this.value = 0;
+        });
         
         // Positive number validation
         document.querySelectorAll('input[type="number"]').forEach(input => {

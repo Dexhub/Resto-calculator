@@ -5,10 +5,12 @@ function generateCashFlow() {
     const premises = AppState.data.premises;
     const investment = AppState.data.investment;
     
-    // Calculate monthly revenue
-    const avgTicketPrice = (premises.averageTicket.inStore * premises.ticketRatio.inStore) +
+    // Calculate monthly revenue (net of delivery commission)
+    const avgTicketGross = (premises.averageTicket.inStore * premises.ticketRatio.inStore) +
                           (premises.averageTicket.delivery * premises.ticketRatio.delivery);
-    const monthlyRevenue = premises.monthlyTickets * avgTicketPrice;
+    const commissionPerTicket = premises.averageTicket.delivery * premises.deliveryCommission * premises.ticketRatio.delivery;
+    const avgTicketNet = avgTicketGross - commissionPerTicket;
+    const monthlyRevenue = premises.monthlyTickets * avgTicketNet;
     
     // Year 1 Cash Flow
     const year1CashFlow = generateYearCashFlow(monthlyRevenue, 1, investment);
@@ -44,7 +46,7 @@ function generateYearCashFlow(baseMonthlyRevenue, year, investment) {
         const revenue = baseMonthlyRevenue * seasonalFactor;
         
         // Cost calculations (percentages based on industry standards)
-        const cogs = revenue * 0.35; // 35% cost of goods sold
+        const cogs = revenue * AppState.data.premises.cogsPercent; // Cost of goods sold
         const labor = revenue * 0.30; // 30% labor costs
         const rent = 5000; // Fixed rent
         const utilities = revenue * 0.05; // 5% utilities
@@ -222,9 +224,17 @@ function calculateResults() {
     AppState.data.results.roi = (totalReturn / totalInvestment) * 100;
     
     // Break-even Analysis
+    const premises = AppState.data.premises;
     const monthlyFixedCosts = 5000 + 2000; // Rent + base loan
-    const contributionMargin = 1 - 0.35; // 1 - COGS ratio
+    const avgTicketGross = (premises.averageTicket.inStore * premises.ticketRatio.inStore) +
+                           (premises.averageTicket.delivery * premises.ticketRatio.delivery);
+    const commissionRatio = (premises.averageTicket.delivery * premises.deliveryCommission * premises.ticketRatio.delivery) / avgTicketGross;
+    const variableCostRatio = premises.cogsPercent + commissionRatio;
+    const contributionMargin = 1 - variableCostRatio;
     AppState.data.results.breakEvenSales = monthlyFixedCosts / contributionMargin;
+    const avgVariableCostPerTicket = avgTicketGross * variableCostRatio;
+    AppState.data.results.breakEvenTickets = Math.ceil(AppState.data.results.breakEvenSales / avgTicketGross);
+    AppState.data.results.avgCostPerTicket = avgVariableCostPerTicket;
     
     // Find break-even month
     let breakEvenMonth = 0;
@@ -250,6 +260,8 @@ function updateResultsTab() {
     // Update break-even info
     document.getElementById('breakeven-months').textContent = results.breakEvenMonths + ' months';
     document.getElementById('breakeven-sales').textContent = formatCurrency(results.breakEvenSales);
+    document.getElementById('breakeven-tickets').textContent = results.breakEvenTickets.toLocaleString();
+    document.getElementById('avg-cost-ticket').textContent = formatCurrency(results.avgCostPerTicket);
     
     // Update financial summary
     const totalInvestment = getTotalInvestment(AppState.data.investment);
